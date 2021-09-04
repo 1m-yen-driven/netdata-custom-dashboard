@@ -1,3 +1,3 @@
 # netdata-custom-dashboard
 
-https://netdata.1m-yen.driven.dev/
+http://netdata.1m-yen.driven.dev/
