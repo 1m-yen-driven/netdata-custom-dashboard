@@ -9,72 +9,39 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 </head>
 <body>
-    <h1>system.cpu</h1>
-    <div data-netdata="system.cpu"
-        data-chart-library="dygraph"
-        data-width="600"
-        data-height="200"
-        data-after="-120"
-        data-host="http://127.0.0.1:19999/"
-        ></div>
-    <div data-netdata="system.cpu"
-        data-chart-library="dygraph"
-        data-width="600"
-        data-height="200"
-        data-after="-120"
-        data-host="http://127.0.0.1:29999/"
-        ></div>
-    <div data-netdata="system.cpu"
-        data-chart-library="dygraph"
-        data-width="600"
-        data-height="200"
-        data-after="-120"
-        data-host="http://127.0.0.1:39999/"
-        ></div>
-    <h1>apps.cpu</h1>
-    <div data-netdata="apps.cpu"
-        data-chart-library="dygraph"
-        data-width="600"
-        data-height="200"
-        data-after="-120"
-        data-host="http://127.0.0.1:19999/"
-        ></div>
-    <div data-netdata="apps.cpu"
-        data-chart-library="dygraph"
-        data-width="600"
-        data-height="200"
-        data-after="-120"
-        data-host="http://127.0.0.1:29999/"
-        ></div>
-    <div data-netdata="apps.cpu"
-        data-chart-library="dygraph"
-        data-width="600"
-        data-height="200"
-        data-after="-120"
-        data-host="http://127.0.0.1:39999/"
-        ></div>
-    <h1>system.ram</h1>
-    <div data-netdata="system.ram"
-        data-chart-library="dygraph"
-        data-width="600"
-        data-height="200"
-        data-after="-120"
-        data-host="http://127.0.0.1:19999/"
-        ></div>
-    <div data-netdata="system.ram"
-        data-chart-library="dygraph"
-        data-width="600"
-        data-height="200"
-        data-after="-120"
-        data-host="http://127.0.0.1:29999/"
-        ></div>
-    <div data-netdata="system.ram"
-        data-chart-library="dygraph"
-        data-width="600"
-        data-height="200"
-        data-after="-120"
-        data-host="http://127.0.0.1:39999/"
-        ></div>
+    <div id="system.cpu">
+        <h1>system.cpu</h1>
+    </div>
+    <div id="apps.cpu">
+        <h1>apps.cpu</h1>
+    </div>
+    <div id="system.ram">
+        <h1>system.ram</h1>
+    </div>
 </body>
 <script type="text/javascript" src="http://127.0.0.1:19999/dashboard.js"></script>
+<script type="module">
+    const keys = ["system.cpu", "apps.cpu", "system.ram"]
+    const defaultNumNodes = 3
+    const searchParams = new URLSearchParams(location.search)
+    let numNodes = parseInt(searchParams.get("n"))
+    if (!(0 < numNodes && numNodes < 6)) {
+        numNodes = defaultNumNodes
+        searchParams.set("n", numNodes.toString())
+        location.search = searchParams.toString()
+    }
+    for (const key of keys) {
+        const parent = document.getElementById(key)
+        for (let i = 1; i <= numNodes; i++) {
+            const child = document.createElement("div")
+            child.setAttribute("data-netdata", key)
+            child.setAttribute("data-cahrt-library", "dygraph")
+            child.setAttribute("data-width", "600")
+            child.setAttribute("data-height", "200")
+            child.setAttribute("data-after", "-120")
+            child.setAttribute("data-host", `http://127.0.0.1:${i * 10000 + 9999}`)
+            parent.appendChild(child)
+        }
+    }
+</script>
 </html>
